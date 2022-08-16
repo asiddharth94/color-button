@@ -1,17 +1,12 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import "./ColorButton.scss";
 
 const ColorButton = () => {
-  const colorButtonElem = useRef(null);
-
   const [buttonColor, setButtonColor] = useState("red");
+  const [disabled, setDisabled] = useState(false);
 
   const handleClick = () => {
     setButtonColor(buttonColor === "red" ? "blue" : "red");
-  };
-
-  const handleCheckbox = () => {
-    colorButtonElem.current.disabled = !colorButtonElem.current.disabled;
   };
 
   return (
@@ -20,11 +15,18 @@ const ColorButton = () => {
         className="red-btn"
         style={{ backgroundColor: buttonColor }}
         onClick={handleClick}
-        ref={colorButtonElem}
+        disabled={disabled}
       >
         Change to {buttonColor === "red" ? "blue" : "red"}
       </button>
-      <input type="checkbox" onChange={handleCheckbox} />
+      <input
+        type="checkbox"
+        defaultChecked={disabled}
+        aria-checked={disabled}
+        onChange={(event) => {
+          setDisabled(event.target.checked);
+        }}
+      />
     </div>
   );
 };
